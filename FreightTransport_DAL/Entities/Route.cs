@@ -16,5 +16,7 @@ namespace FreightTransport_DAL.Entities
 
         public int StartCityId { get; set; }
         public City StartCity { get; set; }
+
+        public ICollection<Transportation> Transportations { get; set; }
     }
 }

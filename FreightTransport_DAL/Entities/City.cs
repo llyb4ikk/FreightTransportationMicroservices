@@ -13,7 +13,6 @@ namespace FreightTransport_DAL.Entities
         public int RegionId { get; set; }
         public Region Region { get; set; }
 
-        public ICollection<Route> DestinationCities { get; set; }
-        public ICollection<Route> StartCities { get; set; }
+        public ICollection<Route> Routes { get; set; }
     }
 }
