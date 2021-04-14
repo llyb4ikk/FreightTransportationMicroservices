@@ -12,5 +12,7 @@ namespace FreightTransport_DAL.Entities
         public string Surname { get; set; }
         public DateTime DateOfBirth { get; set; }
         public int Experience { get; set; }
+
+        public ICollection<Transportation> Transportations { get; set; }
     }
 }

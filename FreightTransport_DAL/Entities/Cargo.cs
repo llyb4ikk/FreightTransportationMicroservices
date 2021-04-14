@@ -16,7 +16,7 @@ namespace FreightTransport_DAL.Entities
         public float? Length { get; set; }
 
         public int ClientId { get; set; }
-        public Client Client { get; set; }
+        public UserProfile Client { get; set; }
 
     }
 }

@@ -14,5 +14,7 @@ namespace FreightTransport_DAL.Entities
 
         public int CarTypeId { get; set; }
         public CarType CarType { get; set; }
+
+        public ICollection<Transportation> Transportations { get; set; }
     }
 }
