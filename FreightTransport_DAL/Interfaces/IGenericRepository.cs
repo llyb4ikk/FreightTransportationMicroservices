@@ -8,10 +8,10 @@ namespace FreightTransport_DAL.Interfaces
 {
     public interface IGenericRepository<TEntity>
     {
-        Task<TEntity> Add(TEntity obj);
-        Task<IEnumerable<TEntity>> Get();
-        Task<TEntity> GetById(int id);
-        Task<TEntity> Update(TEntity obj);
-        Task<TEntity> Delete(int id);
+        Task<TEntity> AddAsync(TEntity obj);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<TEntity> GetByIdAsync(int id);
+        Task<TEntity> UpdateAsync(TEntity obj);
+        Task<bool> DeleteAsync(int id);
     }
 }
