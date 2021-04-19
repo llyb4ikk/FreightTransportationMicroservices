@@ -9,6 +9,8 @@ namespace FreightTransport_DAL.Entities
     public class City : BaseEntity
     {
         public string Name { get; set; }
+        public float NorthLatitude { get; set; }
+        public float EastLongitude { get; set; }
 
         public int RegionId { get; set; }
         public Region Region { get; set; }

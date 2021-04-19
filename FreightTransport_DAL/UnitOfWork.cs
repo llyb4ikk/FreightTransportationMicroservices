@@ -6,7 +6,6 @@ namespace FreightTransport_DAL
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ICarRepository _carRepository;
-        private readonly ICarTypeRepository _carTypeRepository;
         private readonly ICarDriverRepository _carDriverRepository;
         private readonly ICargoRepository _cargoRepository;
         private readonly ICityRepository _cityRepository;
@@ -16,8 +15,7 @@ namespace FreightTransport_DAL
 
 
         public UnitOfWork(
-            ICarDriverRepository carDriverRepository, 
-            ICarTypeRepository carTypeRepository, 
+            ICarDriverRepository carDriverRepository,
             ICarRepository carRepository, 
             ICargoRepository cargoRepository, 
             ICityRepository cityRepository, 
@@ -26,7 +24,6 @@ namespace FreightTransport_DAL
             ITransportationRepository transportationRepository)
         {
             _carDriverRepository = carDriverRepository;
-            _carTypeRepository = carTypeRepository;
             _carRepository = carRepository;
             _cargoRepository = cargoRepository;
             _cityRepository = cityRepository;
@@ -40,14 +37,6 @@ namespace FreightTransport_DAL
             get
             {
                 return _carRepository;
-            }
-        }
-
-        public ICarTypeRepository CarTypeRepository
-        {
-            get
-            {
-                return _carTypeRepository;
             }
         }
 
