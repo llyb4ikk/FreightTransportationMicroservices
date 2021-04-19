@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreightTransport_DAL.Enums;
 
 namespace FreightTransport_DAL.Entities
 {
@@ -10,8 +11,10 @@ namespace FreightTransport_DAL.Entities
     {
         public string Name { get; set; }
         public string Surname { get; set; }
+        public string MiddleName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public int Experience { get; set; }
+        public CarDriverStatus Status { get; set; }
 
         public ICollection<Transportation> Transportations { get; set; }
     }

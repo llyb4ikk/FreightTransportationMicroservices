@@ -14,7 +14,6 @@ namespace FreightTransport_DAL.DBContext
     {
 
         public DbSet<Cargo> Cargos { get; set; }
-        public DbSet<CarType> CarTypes { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<CarDriver> CarDrivers { get; set; }
         public DbSet<Region> Regions { get; set; }
@@ -22,51 +21,60 @@ namespace FreightTransport_DAL.DBContext
         public DbSet<Route> Routes { get; set; }
         public DbSet<Transportation> Transportations { get; set; }
 
-        public FreightTransportDBContext(DbContextOptions<FreightTransportDBContext> options) : base(options) { }
+        public FreightTransportDBContext(DbContextOptions<FreightTransportDBContext> options) : base(options)
+        {
+            Database.EnsureCreated();
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityRole>().HasData(
-                new IdentityRole() { Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole() { Name = "User", NormalizedName = "USER" }
-            );
-
-            builder.Entity<Car>()
-                .HasOne(c => c.CarType)
-                .WithMany(ct => ct.Cars)
-                .HasForeignKey(c => c.CarTypeId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.Entity<Cargo>()
                 .HasOne(c => c.Client)
                 .WithMany(cl => cl.Cargos)
                 .HasForeignKey(c => c.ClientId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<City>()
                 .HasOne(c => c.Region)
                 .WithMany(r => r.Cities)
                 .HasForeignKey(c => c.RegionId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Route>()
                 .HasOne(r => r.DestinationCity)
                 .WithMany(c => c.Routes)
                 .HasForeignKey(r => r.DestinationCityId)
-                .OnDelete(DeleteBehavior.NoAction);
-            builder.Entity<Route>()
-                .HasOne(r => r.StartCity)
-                .WithMany(c => c.Routes)
-                .HasForeignKey(r => r.StartCityId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(r => r.StartCityId) 
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Transportation>()
                 .HasOne(t => t.Car)
                 .WithMany(c => c.Transportations)
                 .HasForeignKey(t => t.CarId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Transportation>()
+                .HasOne(t => t.CarDriver)
+                .WithMany(c => c.Transportations)
+                .HasForeignKey(t => t.CarDriverId)
+                .HasForeignKey(t => t.CarDriverSecondId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Transportation>()
+                .HasOne(t => t.Cargo)
+                .WithOne(c => c.Transportation)
+                .HasForeignKey<Transportation>(t => t.CargoId)
+                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Transportation>()
+                .HasOne(t => t.Route)
+                .WithMany(c => c.Transportations)
+                .HasForeignKey(t => t.RouteId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<IdentityRole>().HasData(
+            //    new IdentityRole() { Name = "Admin", NormalizedName = "ADMIN" },
+            //    new IdentityRole() { Name = "Client", NormalizedName = "CLIENT" }
+            //);
         }
     }
 }

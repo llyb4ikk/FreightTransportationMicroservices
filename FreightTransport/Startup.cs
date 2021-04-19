@@ -1,3 +1,4 @@
+using FreightTransport_DAL.DBContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +12,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FreightTransport.Mapping;
+using FreightTransport_BLL.Interfaces.IServices;
+using FreightTransport_BLL.Services;
+using FreightTransport_DAL;
+using FreightTransport_DAL.Interfaces;
+using FreightTransport_DAL.Interfaces.IRepositories;
+using FreightTransport_DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace FreightTransport
 {
@@ -26,8 +35,27 @@ namespace FreightTransport
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<FreightTransportDBContext>();
+
+            services.AddTransient<ICargoRepository, CargoRepository>();
+            services.AddTransient<ICarDriverRepository, CarDriverRepository>();
+            services.AddTransient<ICarRepository, CarRepository>();
+            services.AddTransient<IRegionRepository, RegionRepository>();
+            services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<IRouteRepository, RouteRepository>();
+            services.AddTransient<ITransportationRepository, TransportationRepository>();
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddTransient<ICarDriverService, CarDriverService>();
+            services.AddTransient<ICarService, CarService>();
+
+            services.AddAutoMapper(typeof(MainMappingProfile));
 
             services.AddControllers();
+
+            services.AddDbContext<FreightTransportDBContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FreightTransport", Version = "v1" });
