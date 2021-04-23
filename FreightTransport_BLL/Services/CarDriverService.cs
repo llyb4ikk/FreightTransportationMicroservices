@@ -51,7 +51,7 @@ namespace FreightTransport_BLL.Services
             return null;
         }
 
-        public async Task<bool> DeleteCarDriver(int id)
+        public async Task<bool> DeleteCarDriverAsync(int id)
         {
             return await _db.CarDriverRepository.DeleteAsync(id);
         }

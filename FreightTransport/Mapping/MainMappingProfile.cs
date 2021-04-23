@@ -10,6 +10,13 @@ namespace FreightTransport.Mapping
         {
             CreateMap<CarDriver, CarDriverDTO>().ReverseMap();
 
+            CreateMap<Car, CarDTO>().ReverseMap();
+
+            CreateMap<Cargo, CargoDTO>().ReverseMap();
+
+            CreateMap<Route, RouteDTO>().ReverseMap();
+
+            CreateMap<Transportation, TransportationDTO>().ReverseMap();
         }
     }
 }

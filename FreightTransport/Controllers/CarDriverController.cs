@@ -34,5 +34,35 @@ namespace FreightTransport.Controllers
                 return Ok(result);
             return NotFound("empty");
         }
+
+        [HttpGet]
+        [Route("GetCarDriverById/{id}")]
+        public async Task<IActionResult> GetCarDriverById(int id)
+        {
+            var result = await _service.GetCarDriverByIdAsync(id);
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpPut]
+        [Route("UpdateCarDriver")]
+        public async Task<IActionResult> UpdateCarDriver(CarDriverDTO carDriverDto)
+        {
+            var result = await _service.EditCarDriverAsync(carDriverDto);
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpDelete]
+        [Route("DeleteCarDriver/{id}")]
+        public async Task<IActionResult> DeleteCarDriver(int id)
+        {
+            var result = await _service.DeleteCarDriverAsync(id);
+            if (result)
+                return Ok();
+            return NotFound("empty");
+        }
     }
 }

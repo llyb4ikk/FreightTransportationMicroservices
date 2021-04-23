@@ -4,6 +4,7 @@ namespace FreightTransport_BLL.DTOs
 {
     public class CarDTO
     {
+        public int Id { get; set; }
         public string Model { get; set; }
         public float FuelConsumption { get; set; }
         public int CarryingCapacity { get; set; }

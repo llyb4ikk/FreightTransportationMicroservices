@@ -49,6 +49,9 @@ namespace FreightTransport
 
             services.AddTransient<ICarDriverService, CarDriverService>();
             services.AddTransient<ICarService, CarService>();
+            services.AddTransient<ICargoService, CargoService>();
+            services.AddTransient<IRouteService, RouteService>();
+            services.AddTransient<ITransportationService, TransportationService>();
 
             services.AddAutoMapper(typeof(MainMappingProfile));
 
