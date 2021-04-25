@@ -59,6 +59,13 @@ namespace FreightTransport
 
             services.AddDbContext<FreightTransportDBContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication("Bearer", options =>
+                {
+                    options.ApiName = "freighttransportapi";
+                    options.Authority = "https://localhost:44330";
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FreightTransport", Version = "v1" });
@@ -79,6 +86,7 @@ namespace FreightTransport
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

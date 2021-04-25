@@ -1,0 +1,52 @@
+﻿@page "/car"
+@inject ICarService carService;
+@inject HttpClient http;
+@using FreightTransport_Client.Data.Interfaces;
+@using FreightTransport_Client.Data.Models
+@using Microsoft.AspNetCore.Http.Extensions
+
+<div class="align-content-center">
+    <h3>Cars</h3>
+    <NavLink href="/car/addcar">Add car</NavLink>
+</div>
+
+
+@if (Cars == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>Fuel Consumption</th>
+                <th>Carrying Capacity</th>
+                <th>Car Type</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var car in Cars)
+        {
+            <tr>
+                <td>@car.Model</td>
+                <td>@car.FuelConsumption</td>
+                <td>@car.CarryingCapacity</td>
+                <td>@car.CarType</td>
+                <td>@car.Status</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<CarModel> Cars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cars = await carService.GetAllCars();
+    }
+}

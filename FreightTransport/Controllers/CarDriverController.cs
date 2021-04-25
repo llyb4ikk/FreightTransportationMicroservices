@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
 using FreightTransport_BLL.DTOs;
 using FreightTransport_BLL.Interfaces.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FreightTransport.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class CarDriverController : Controller
     {
         private readonly ICarDriverService _service;

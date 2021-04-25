@@ -1,0 +1,62 @@
+﻿@page "/car/addcar"
+@inject ICarService carService
+@using FreightTransport_Client.Data.Models
+@using Microsoft.AspNetCore.Http.Extensions
+@using System.Runtime.Intrinsics.X86
+@using FreightTransport_Client.Data.Enums
+@using FreightTransport_Client.Data.Interfaces
+@using Microsoft.AspNetCore.Mvc.ModelBinding.Binders
+
+
+<NavLink href="/car">&#8678Back</NavLink><br/>
+
+<h3>AddCar</h3><br/>
+
+<EditForm Model="@InputCarModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>
+        <label>
+            Model:
+            <InputText @bind-Value="InputCarModel.Model"></InputText>
+        </label>
+    </p>
+    <p>
+        <label>
+            Fuel consumption:
+            <InputNumber @bind-Value="InputCarModel.FuelConsumption"></InputNumber>
+        </label>
+    </p>
+    <p>
+        <label>
+            Carrying capacity:
+            <InputNumber @bind-Value="InputCarModel.CarryingCapacity"></InputNumber>
+        </label>
+    </p>
+    <p>
+        <label>
+            Car type:
+            <InputSelect @bind-Value="InputCarModel.CarType">
+                <option value="@CarType.Box">Box</option>
+                <option value="@CarType.Dump">Dump</option>
+                <option value="@CarType.Tank">Tank</option>
+                <option value="@CarType.Tow">Tow</option>
+                <option value="@CarType.Traktor">Traktor</option>
+            </InputSelect>
+        </label>
+    </p>
+
+    <button type="submit">Add</button>
+</EditForm>
+
+
+@code {
+    private CarModel InputCarModel = new CarModel() {Status = CarStatus.Free};
+
+    private async Task HandleValidSubmit()
+    {
+        carService.AddCar(InputCarModel);
+        
+    }
+}
