@@ -32,15 +32,27 @@ namespace FreightTransport_Client
             //services.AddSingleton<HttpClient>();
 
             services.AddTransient<ICarService, CarService>();
+            services.AddTransient<ICarDriverService, CarDriverService>();
+            services.AddTransient<IRouteService, RouteService>();
+            services.AddTransient<ICityService, CityService>();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
-            services.AddHttpClient<ICarService, CarService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44368/");
-            });
+            services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44368/")});
+            //services.AddHttpClient<ICarService, CarService>(client =>
+            //{
+            //    client.BaseAddress = new Uri("https://localhost:44368/");
+            //});
+            //services.AddHttpClient<ICarDriverService, CarDriverService>(client =>
+            //{
+            //    client.BaseAddress = new Uri("https://localhost:44368/");
+            //});
+            //services.AddHttpClient<ICarDriverService, CarDriverService>(client =>
+            //{
+            //    client.BaseAddress = new Uri("https://localhost:44368/");
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

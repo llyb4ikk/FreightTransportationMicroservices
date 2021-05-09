@@ -40,7 +40,6 @@ namespace FreightTransport
             services.AddTransient<ICargoRepository, CargoRepository>();
             services.AddTransient<ICarDriverRepository, CarDriverRepository>();
             services.AddTransient<ICarRepository, CarRepository>();
-            services.AddTransient<IRegionRepository, RegionRepository>();
             services.AddTransient<ICityRepository, CityRepository>();
             services.AddTransient<IRouteRepository, RouteRepository>();
             services.AddTransient<ITransportationRepository, TransportationRepository>();
@@ -51,6 +50,7 @@ namespace FreightTransport
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<ICargoService, CargoService>();
             services.AddTransient<IRouteService, RouteService>();
+            services.AddTransient<ICityService, CityService>();
             services.AddTransient<ITransportationService, TransportationService>();
 
             services.AddAutoMapper(typeof(MainMappingProfile));

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FreightTransport_BLL.DTOs;
 using FreightTransport_BLL.Interfaces.IServices;
 using FreightTransport_DAL.Entities;
 using FreightTransport_DAL.Interfaces;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace FreightTransport_BLL.Services
 {
@@ -26,6 +28,14 @@ namespace FreightTransport_BLL.Services
             return null;
         }
 
+        public async Task<RouteInfoDTO> GetRouteInfoByIdAsync(int id)
+        {
+            var result = await _db.RouteRepository.GetRouteInfoById(id);
+            if (result != null)
+                return _mapper.Map<RouteInfoDTO>(result);
+            return null;
+        }
+
         public async Task<IEnumerable<RouteDTO>> GetAllRoutesAsync()
         {
             IEnumerable<Route> result = await _db.RouteRepository.GetAllAsync();
@@ -34,9 +44,27 @@ namespace FreightTransport_BLL.Services
             return null;
         }
 
+        public async Task<IEnumerable<RouteInfoDTO>> GetAllRoutesInfoAsync()
+        {
+            IEnumerable<Route> result = await _db.RouteRepository.GetAllRoutesInfo();
+            if (result != null)
+                return _mapper.Map<IEnumerable<RouteInfoDTO>>(result);
+            return null;
+        }
+
         public async Task<RouteDTO> AddRouteAsync(RouteDTO routeDto)
         {
             Route route = _mapper.Map<Route>(routeDto);
+
+            var startCity = await _db.CityRepository.GetByIdAsync(route.StartCityId);
+            var destinationCity = await _db.CityRepository.GetByIdAsync(route.DestinationCityId);
+
+            //calculate distance between two cities
+            route.Distance = Math.Sqrt(Math.Pow((startCity.NorthLatitude - startCity.EastLongitude), 2) + Math.Pow((destinationCity.NorthLatitude - destinationCity.EastLongitude), 2));
+
+            //calculate cost of transportation
+            route.Cost = (int)(route.Distance * 10);
+
             var result = await _db.RouteRepository.AddAsync(route);
             if (result != null) return _mapper.Map<RouteDTO>(result);
             return null;

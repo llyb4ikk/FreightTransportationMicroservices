@@ -36,10 +36,30 @@ namespace FreightTransport.Controllers
         }
 
         [HttpGet]
+        [Route("GetAllRoutesInfo")]
+        public async Task<IActionResult> GetAllRoutesInfo()
+        {
+            var result = await _service.GetAllRoutesInfoAsync();
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpGet]
         [Route("GetRouteById/{id}")]
         public async Task<IActionResult> GetRouteById(int id)
         {
             var result = await _service.GetRouteByIdAsync(id);
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpGet]
+        [Route("GetRouteInfoById/{id}")]
+        public async Task<IActionResult> GetRouteInfoById(int id)
+        {
+            var result = await _service.GetRouteInfoByIdAsync(id);
             if (result != null)
                 return Ok(result);
             return NotFound("empty");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreightTransport_DAL.Enums;
 
 namespace FreightTransport_DAL.Entities
 {
@@ -12,9 +13,10 @@ namespace FreightTransport_DAL.Entities
         public float NorthLatitude { get; set; }
         public float EastLongitude { get; set; }
 
-        public int RegionId { get; set; }
         public Region Region { get; set; }
 
-        public ICollection<Route> Routes { get; set; }
+        public ICollection<Route> StartRoutes { get; set; }
+        public ICollection<Route> DestinationRoutes { get; set; }
+
     }
 }

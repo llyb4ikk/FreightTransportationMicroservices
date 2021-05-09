@@ -9,7 +9,6 @@ namespace FreightTransport_DAL
         private readonly ICarDriverRepository _carDriverRepository;
         private readonly ICargoRepository _cargoRepository;
         private readonly ICityRepository _cityRepository;
-        private readonly IRegionRepository _regionRepository;
         private readonly IRouteRepository _routeRepository;
         private readonly ITransportationRepository _transportationRepository;
 
@@ -19,7 +18,6 @@ namespace FreightTransport_DAL
             ICarRepository carRepository, 
             ICargoRepository cargoRepository, 
             ICityRepository cityRepository, 
-            IRegionRepository regionRepository, 
             IRouteRepository routeRepository, 
             ITransportationRepository transportationRepository)
         {
@@ -27,7 +25,6 @@ namespace FreightTransport_DAL
             _carRepository = carRepository;
             _cargoRepository = cargoRepository;
             _cityRepository = cityRepository;
-            _regionRepository = regionRepository;
             _routeRepository = routeRepository;
             _transportationRepository = transportationRepository;
         }
@@ -61,14 +58,6 @@ namespace FreightTransport_DAL
             get
             {
                 return _cityRepository;
-            }
-        }
-
-        public IRegionRepository RegionRepository
-        {
-            get
-            {
-                return _regionRepository;
             }
         }
 

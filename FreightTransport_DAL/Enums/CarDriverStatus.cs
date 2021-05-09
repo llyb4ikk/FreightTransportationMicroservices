@@ -2,8 +2,8 @@
 {
     public enum CarDriverStatus
     {
-        Busy,
         Free,
+        Busy,
         OnVacation,
         OnSickLeave
     }

@@ -10,6 +10,8 @@ namespace FreightTransport_Client.Data.Interfaces
     {
         Task<CarModel> GetCarById(int id);
         Task<IEnumerable<CarModel>> GetAllCars();
-        Task<CarModel> AddCar(CarModel car);
+        Task<bool> AddCar(CarModel car);
+        Task<bool> UpdateCar(CarModel car);
+        Task<bool> DeleteCar(int id);
     }
 }

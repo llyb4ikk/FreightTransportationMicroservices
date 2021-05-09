@@ -1,13 +1,18 @@
 ﻿@page "/car"
 @inject ICarService carService;
 @inject HttpClient http;
+@inject NavigationManager navigationManager;
 @using FreightTransport_Client.Data.Interfaces;
 @using FreightTransport_Client.Data.Models
 @using Microsoft.AspNetCore.Http.Extensions
 
-<div class="align-content-center">
-    <h3>Cars</h3>
-    <NavLink href="/car/addcar">Add car</NavLink>
+<div class="row justify-content-between">
+    <div class="col col-1">
+        <h3>Cars</h3>
+    </div>
+    <div class="col-sm-auto">
+        <button type="button" class="btn btn-primary" @onclick="NavigateToAddCar">Add car</button>
+    </div>
 </div>
 
 
@@ -17,14 +22,18 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-hover ">
         <thead>
             <tr>
-                <th>Model</th>
-                <th>Fuel Consumption</th>
-                <th>Carrying Capacity</th>
-                <th>Car Type</th>
-                <th>Status</th>
+                <th scope="col">Model</th>
+                <th scope="col">Fuel Consumption</th>
+                <th scope="col">Carrying Capacity</th>
+                <th scope="col">Height</th>
+                <th scope="col">Length</th>
+                <th scope="col">Width</th>
+                <th scope="col">Car Type</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -34,8 +43,13 @@ else
                 <td>@car.Model</td>
                 <td>@car.FuelConsumption</td>
                 <td>@car.CarryingCapacity</td>
+                <td>@car.Height</td>
+                <td>@car.Length</td>
+                <td>@car.Width</td>
                 <td>@car.CarType</td>
                 <td>@car.Status</td>
+                <button class="btn btn-warning" @onclick="() => NavigateToEditing(car.Id)">Edit</button>
+                <button class="btn btn-danger" @onclick="() => DeleteCar(car.Id)">Delete</button>
             </tr>
         }
         </tbody>
@@ -49,4 +63,18 @@ else
     {
         Cars = await carService.GetAllCars();
     }
+
+    private void NavigateToAddCar() => navigationManager.NavigateTo("/car/addcar");
+    private void NavigateToEditing(int id) => navigationManager.NavigateTo($"/car/editcar/{id}");
+    private async void DeleteCar(int id)
+    {
+        var result = await carService.DeleteCar(id);
+        if (result)
+        {
+            Cars = await carService.GetAllCars();
+            StateHasChanged();
+        }
+
+    }
+
 }

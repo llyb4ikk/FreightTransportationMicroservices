@@ -1,0 +1,30 @@
+﻿namespace FreightTransport_Client.Data.Enums
+{
+    public enum Region
+    {
+        Cherkasy,
+        Chernihiv,
+        Chernivtsi,
+        Dnipropetrovsk,
+        Donetsk,
+        IvanoFrankivsk,
+        Kharkiv,
+        Kherson,
+        Khmelnytsky,
+        Kirovograd,
+        Kyiv,
+        Luhansk,
+        Lviv,
+        Mykolayiv,
+        Odesa,
+        Poltava,
+        Rivne,
+        Sumy,
+        Ternopil,
+        Vinnytsya,
+        Volyn,
+        Zakarpattya,
+        Zaporizhzhya,
+        Zhytomyr,
+    }
+}

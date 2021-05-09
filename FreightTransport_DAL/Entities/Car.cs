@@ -13,7 +13,7 @@ namespace FreightTransport_DAL.Entities
         public float FuelConsumption { get; set; }
         public int CarryingCapacity { get; set; }
         public float? Height { get; set; }
-        public float? Width { get; set; }
+        public float? Widthf { get; set; }
         public float? Length { get; set; }
         public CarType CarType { get; set; }
         public CarStatus Status { get; set; }

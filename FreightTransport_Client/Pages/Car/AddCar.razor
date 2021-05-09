@@ -1,62 +1,79 @@
 ﻿@page "/car/addcar"
 @inject ICarService carService
+@inject NavigationManager navigationManager
 @using FreightTransport_Client.Data.Models
-@using Microsoft.AspNetCore.Http.Extensions
-@using System.Runtime.Intrinsics.X86
 @using FreightTransport_Client.Data.Enums
 @using FreightTransport_Client.Data.Interfaces
-@using Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 
+<div class="col-sm-auto">
+    <NavLink href="/car">&#8678Back to list of cars</NavLink><br />
 
-<NavLink href="/car">&#8678Back</NavLink><br/>
+    <div class="row justify-content-center">
+        <div class="col-4 ">
+            <div class="row justify-content-center"><h3 class="col-auto">Add Car</h3></div>
 
-<h3>AddCar</h3><br/>
+            <EditForm Model="@InputCarModel" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
 
-<EditForm Model="@InputCarModel" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+                <div class="form-group has-validation">
+                    <fieldset>
+                        <label>Car model:</label>
+                        <InputText class="form-control" @bind-Value="InputCarModel.Model"></InputText>
+                    </fieldset>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Fuel consumption:</label>
+                    <InputNumber class="form-control" @bind-Value="InputCarModel.FuelConsumption"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Carrying capacity:</label>
+                    <InputNumber class="form-control" @bind-Value="InputCarModel.CarryingCapacity"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Height:</label>
+                    <InputNumber class="form-control" @bind-Value="InputCarModel.Height"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Width:</label>
+                    <InputNumber class="form-control" @bind-Value="InputCarModel.Width"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Length:</label>
+                    <InputNumber class="form-control" @bind-Value="InputCarModel.Length"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Car type:</label>
+                    <InputSelect class="form-control" @bind-Value="InputCarModel.CarType">
+                        @foreach (var item in Enum.GetNames<CarType>())
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Add car</button>
+                    </div>
+                </div>
 
-    <p>
-        <label>
-            Model:
-            <InputText @bind-Value="InputCarModel.Model"></InputText>
-        </label>
-    </p>
-    <p>
-        <label>
-            Fuel consumption:
-            <InputNumber @bind-Value="InputCarModel.FuelConsumption"></InputNumber>
-        </label>
-    </p>
-    <p>
-        <label>
-            Carrying capacity:
-            <InputNumber @bind-Value="InputCarModel.CarryingCapacity"></InputNumber>
-        </label>
-    </p>
-    <p>
-        <label>
-            Car type:
-            <InputSelect @bind-Value="InputCarModel.CarType">
-                <option value="@CarType.Box">Box</option>
-                <option value="@CarType.Dump">Dump</option>
-                <option value="@CarType.Tank">Tank</option>
-                <option value="@CarType.Tow">Tow</option>
-                <option value="@CarType.Traktor">Traktor</option>
-            </InputSelect>
-        </label>
-    </p>
+            </EditForm>
+        </div>
+    </div>
+</div>
 
-    <button type="submit">Add</button>
-</EditForm>
 
 
 @code {
-    private CarModel InputCarModel = new CarModel() {Status = CarStatus.Free};
+    private CarModel InputCarModel = new CarModel() { Status = CarStatus.Free };
 
     private async Task HandleValidSubmit()
     {
-        carService.AddCar(InputCarModel);
-        
+        var result = await carService.AddCar(InputCarModel);
+        if (result)
+        {
+            navigationManager.NavigateTo("/car");
+        }
+
     }
 }

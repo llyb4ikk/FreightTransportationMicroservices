@@ -1,0 +1,76 @@
+﻿@page "/cardriver"
+@inject ICarDriverService carDriverService;
+@inject HttpClient http;
+@inject NavigationManager navigationManager;
+@using FreightTransport_Client.Data.Interfaces;
+@using FreightTransport_Client.Data.Models
+@using Microsoft.AspNetCore.Http.Extensions
+
+<div class="row justify-content-between">
+    <div class="col col-3">
+        <h3>Car drivers</h3>
+    </div>
+    <div class="col-sm-auto">
+        <button type="button" class="btn btn-primary" @onclick="NavigateToAddCarDriver">Add car driver</button>
+    </div>
+</div>
+
+
+@if (carDrivers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-hover ">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Middle name</th>
+                <th scope="col">Date of birth</th>
+                <th scope="col">Experience</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cardriver in carDrivers)
+            {
+                <tr>
+                    <td>@cardriver.Name</td>
+                    <td>@cardriver.Surname</td>
+                    <td>@cardriver.MiddleName</td>
+                    <td>@cardriver.DateOfBirth</td>
+                    <td>@cardriver.Experience</td>
+                    <td>@cardriver.Status</td>
+                    <button class="btn btn-warning" @onclick="() => NavigateToEditing(cardriver.Id)">Edit</button>
+                    <button class="btn btn-danger" @onclick="() => DeleteCarDriver(cardriver.Id)">Delete</button>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<CarDriverModel> carDrivers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        carDrivers = await carDriverService.GetAllCarDrivers();
+    }
+
+    private void NavigateToAddCarDriver() => navigationManager.NavigateTo("/cardriver/addcardriver");
+    private void NavigateToEditing(int id) => navigationManager.NavigateTo($"/cardriver/editcardriver/{id}");
+    private async void DeleteCarDriver(int id)
+    {
+        var result = await carDriverService.DeleteCarDriver(id);
+        if (result)
+        {
+            carDrivers = await carDriverService.GetAllCarDrivers();
+            StateHasChanged();
+        }
+
+    }
+
+}

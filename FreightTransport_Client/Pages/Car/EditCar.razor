@@ -1,0 +1,86 @@
+﻿@page "/car/editcar/{id:int}"
+@inject ICarService carService
+@inject NavigationManager navigationManager
+@using FreightTransport_Client.Data.Models
+@using FreightTransport_Client.Data.Enums
+@using FreightTransport_Client.Data.Interfaces
+
+<div class="col-sm-auto">
+    <NavLink href="/car">&#8678Back to list of cars</NavLink><br />
+
+    <div class="row justify-content-center">
+        <div class="col-4 ">
+            <div class="row justify-content-center"><h3 class="col-auto">Edit car</h3></div>
+
+            <EditForm Model="@car" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group has-validation">
+                    <fieldset>
+                        <label>Car model:</label>
+                        <InputText class="form-control" @bind-Value="car.Model"></InputText>
+                    </fieldset>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Fuel consumption:</label>
+                    <InputNumber class="form-control" @bind-Value="car.FuelConsumption"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Carrying capacity:</label>
+                    <InputNumber class="form-control" @bind-Value="car.CarryingCapacity"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Height:</label>
+                    <InputNumber class="form-control" @bind-Value="car.Height"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Width:</label>
+                    <InputNumber class="form-control" @bind-Value="car.Width"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Length:</label>
+                    <InputNumber class="form-control" @bind-Value="car.Length"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Car type:</label>
+                    <InputSelect class="form-control" @bind-Value="car.CarType">
+                        @foreach (var item in Enum.GetNames<CarType>())
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Update car</button>
+                    </div>
+                </div>
+
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    private CarModel car = new CarModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        car = await carService.GetCarById(id);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var result = await carService.UpdateCar(car);
+        if (result)
+        {
+            navigationManager.NavigateTo("/car");
+        }
+    }
+}

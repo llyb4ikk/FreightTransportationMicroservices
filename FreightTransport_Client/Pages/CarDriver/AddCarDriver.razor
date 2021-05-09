@@ -1,0 +1,75 @@
+﻿@page "/cardriver/addcardriver"
+@inject ICarDriverService carDriverService
+@inject NavigationManager navigationManager
+@using FreightTransport_Client.Data.Models
+@using FreightTransport_Client.Data.Enums
+@using FreightTransport_Client.Data.Interfaces
+
+<div class="col-sm-auto">
+    <NavLink href="/cardriver">&#8678Back to list of car drivers</NavLink><br />
+
+    <div class="row justify-content-center">
+        <div class="col-4 ">
+            <div class="row justify-content-center"><h3 class="col-auto">Add car driver</h3></div>
+
+            <EditForm Model="@InputCarDriverModel" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group has-validation">
+                    <fieldset>
+                        <label>Name:</label>
+                        <InputText class="form-control" @bind-Value="InputCarDriverModel.Name"></InputText>
+                    </fieldset>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Surname:</label>
+                    <InputText class="form-control" @bind-Value="InputCarDriverModel.Surname"></InputText>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Middle name:</label>
+                    <InputText class="form-control" @bind-Value="InputCarDriverModel.MiddleName"></InputText>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Date of birth:</label>
+                    <InputDate class="form-control" @bind-Value="InputCarDriverModel.DateOfBirth"></InputDate>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Experience:</label>
+                    <InputNumber class="form-control" @bind-Value="InputCarDriverModel.Experience"></InputNumber>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Status:</label>
+                    <InputSelect class="form-control" @bind-Value="InputCarDriverModel.Status">
+                        @foreach (var item in Enum.GetNames<CarDriverStatus>())
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Add car driver</button>
+                    </div>
+                </div>
+
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private CarDriverModel InputCarDriverModel = new CarDriverModel() { Status = CarDriverStatus.Free, DateOfBirth = DateTime.Now};
+
+    private async Task HandleValidSubmit()
+    {
+        var result = await carDriverService.AddCarDriver(InputCarDriverModel);
+        if (result)
+        {
+            navigationManager.NavigateTo("/cardriver");
+        }
+
+    }
+}

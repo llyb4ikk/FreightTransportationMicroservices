@@ -8,7 +8,7 @@ namespace FreightTransport_DAL.Entities
 {
     public class Route : BaseEntity
     {
-        public int Distance { get; set; }
+        public double Distance { get; set; }
         public int Cost { get; set; }
 
         public int DestinationCityId { get; set; }
