@@ -26,6 +26,7 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<IEnumerable<CarModel>> GetAllCars()
         {
+
             var response = await _http.GetAsync("Car/GetAllCars");
 
             var responseContent = await response.Content.ReadAsStreamAsync();

@@ -23,4 +23,9 @@
     <UpToDateCheckInput Remove="Pages\CarDriver\EditCarDriver.razor" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.0.0" />
+    <PackageReference Include="IdentityModel" Version="5.1.0" />
+  </ItemGroup>
+
 </Project>

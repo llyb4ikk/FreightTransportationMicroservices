@@ -1,10 +1,9 @@
-﻿using System;
-using FreightTransport_DAL.Entities;
-using FreightTransport_DAL.Enums;
+﻿using FreightTransport_Client.Data.Enums;
+using System;
 
-namespace FreightTransport_BLL.DTOs
+namespace FreightTransport_Client.Data.Models
 {
-    public class TransportationDetailsDTO
+    public class TransportationInfoModel
     {
         public int Id { get; set; }
         public DateTime DepartureDate { get; set; }

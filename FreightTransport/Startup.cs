@@ -63,7 +63,7 @@ namespace FreightTransport
                 .AddIdentityServerAuthentication("Bearer", options =>
                 {
                     options.ApiName = "freighttransportapi";
-                    options.Authority = "https://localhost:44330";
+                    options.Authority = "https://localhost:44366";
                 });
 
             services.AddSwaggerGen(c =>

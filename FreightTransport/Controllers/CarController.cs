@@ -8,7 +8,7 @@ namespace FreightTransport.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //[Authorize]
+    [Authorize]
     public class CarController : Controller
     {
         private readonly ICarService _service;
