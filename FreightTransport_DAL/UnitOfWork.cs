@@ -9,24 +9,27 @@ namespace FreightTransport_DAL
         private readonly ICarDriverRepository _carDriverRepository;
         private readonly ICargoRepository _cargoRepository;
         private readonly ICityRepository _cityRepository;
-        private readonly IRouteRepository _routeRepository;
         private readonly ITransportationRepository _transportationRepository;
+        private readonly IDriverSalaryRepository _driverSalaryRepository;
+        private readonly IClientRepository _clientRepository;
 
 
         public UnitOfWork(
             ICarDriverRepository carDriverRepository,
             ICarRepository carRepository, 
             ICargoRepository cargoRepository, 
-            ICityRepository cityRepository, 
-            IRouteRepository routeRepository, 
-            ITransportationRepository transportationRepository)
+            ICityRepository cityRepository,
+            ITransportationRepository transportationRepository, 
+            IDriverSalaryRepository driverSalaryRepository, 
+            IClientRepository clientRepository)
         {
             _carDriverRepository = carDriverRepository;
             _carRepository = carRepository;
             _cargoRepository = cargoRepository;
             _cityRepository = cityRepository;
-            _routeRepository = routeRepository;
             _transportationRepository = transportationRepository;
+            _driverSalaryRepository = driverSalaryRepository;
+            _clientRepository = clientRepository;
         }
 
         public ICarRepository CarRepository
@@ -61,19 +64,28 @@ namespace FreightTransport_DAL
             }
         }
 
-        public IRouteRepository RouteRepository
-        {
-            get
-            {
-                return _routeRepository;
-            }
-        }
 
         public ITransportationRepository TransportationRepository
         {
             get
             {
                 return _transportationRepository;
+            }
+        }
+        public IDriverSalaryRepository DriverSalaryRepository
+        {
+            get
+            {
+                return _driverSalaryRepository;
+            }
+        }
+
+
+        public IClientRepository ClientRepository
+        {
+            get
+            {
+                return _clientRepository;
             }
         }
     }

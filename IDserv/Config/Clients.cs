@@ -14,8 +14,15 @@ namespace IdentityServer
                     ClientId = "MainClient",
                     ClientName = "Example client application using client credentials",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
-                    AllowedScopes = new List<string> { "freighttransportapi.read", "freighttransportapi.write" }
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("Secretpaswd".Sha256())
+                    },
+                    AllowedScopes = new List<string>
+                    {
+                        "freighttransportapi.read", 
+                        "freighttransportapi.write"
+                    }
                 }
             };
         }

@@ -1,24 +1,26 @@
 ﻿@page "/transportation/addtransportation"
-@inject IRouteService routeService
 @inject ICityService cityService
 @inject ITransportationService transportationService
+@inject ICarService carService
+@inject ICarDriverService carDriverService
+@inject IDriverSalaryService driverSalaryService
 @inject NavigationManager navigationManager
 @using FreightTransport_Client.Data.Models
 @using FreightTransport_Client.Data.Enums
 @using FreightTransport_Client.Data.Interfaces
+@using System.Net
 
-<div class="col-sm-auto">
-    <NavLink href="/cardriver">&#8678Back to list of transportations</NavLink><br />
+<div class="col-auto">
+    <NavLink href="/transportation">&#8678Back to list of transportations</NavLink><br />
+
+    <div class="row justify-content-center"><h3 class="col-auto">Add transportation</h3></div><br/>
 
     <div class="row justify-content-center">
-        <div class="col-4 ">
-            <div class="row justify-content-center"><h3 class="col-auto">Add route</h3></div>
-
-            <EditForm Model="@InputRouteModel" OnValidSubmit="@HandleValidSubmit">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-
-                <div class="form-group">
+        <EditForm class="col-10" Model="@transportationModel" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="row justify-content-around">
+                <div class="col-4">
                     <label>Start region:</label>
                     <InputSelect class="form-control" @bind-Value="startRegion">
                         @foreach (var item in Enum.GetNames<Region>())
@@ -26,10 +28,8 @@
                             <option value="@item">@item</option>
                         }
                     </InputSelect>
-                </div>
-                <div class="form-group">
                     <label>Start city:</label>
-                    <InputSelect class="form-control" @bind-Value="InputRouteModel.StartCityId">
+                    <InputSelect class="form-control" @bind-Value="StartCity">
                         @if (sc != null)
                         {
                             foreach (var item in sc)
@@ -38,8 +38,13 @@
                             }
                         }
                     </InputSelect>
-                </div><br />
-                <div class="form-group">
+                </div>
+
+                <div class="col-1">
+                    <div class="row justify-content-center"></div>
+                </div>
+
+                <div class="col-4">
                     <label>Destination region:</label>
                     <InputSelect class="form-control" @bind-Value="destinationRegion">
                         @foreach (var item in Enum.GetNames<Region>())
@@ -47,10 +52,9 @@
                             <option value="@item">@item</option>
                         }
                     </InputSelect>
-                </div>
-                <div class="form-group">
+
                     <label>Destination city:</label>
-                    <InputSelect class="form-control" @bind-Value="InputRouteModel.DestinationCityId">
+                    <InputSelect class="form-control" @bind-Value="DestinationCity">
                         @if (dc != null)
                         {
                             foreach (var item in dc)
@@ -60,24 +64,111 @@
                         }
                     </InputSelect>
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">Add route</button>
-                    </div>
-                </div>
+            </div><br /><br />
 
-            </EditForm>
-        </div>
+            <div class="row justify-content-around">
+                <div class="col-3">
+                    <label>Start date:</label>
+                    <InputDate class="form-control" @bind-Value="transportationModel.StartDate"></InputDate>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-3">
+                    <label>Arrival date:</label>
+                    <InputDate class="form-control" @bind-Value="transportationModel.ArrivalDate"></InputDate>
+                </div>
+            </div><br /><br />
+
+            <div class="row justify-content-center">
+                <div class="col-2">
+                    <label>Car type:</label>
+                    <InputSelect class="form-control" @bind-Value="SelectedCarType">
+                        @foreach (var item in Enum.GetNames<CarType>())
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="col-4">
+                    <label>Free cars:</label>
+                    <InputSelect class="form-control" @bind-Value="SelectedCarModelId">
+                        @if (FreeCars != null)
+                        {
+                            foreach (var item in FreeCars)
+                            {
+                                <option value="@item.Id">@item.Model, @item.CarryingCapacity tons, @item.FuelConsumption liters</option>
+                            }
+                        }
+                    </InputSelect>
+                    @if (_responceCarsModel != null)
+                    {
+                        var clas = _responceCarsModel.StatusCode == HttpStatusCode.NotFound ? "alert-danger" : "alert-warning";
+                        <p class="@clas">@responceCarsModel.Message</p>
+                    }
+                </div>
+            </div>
+
+            <div class="row justify-content-around">
+                <div class="col-4">
+                    <label>Drivers:</label>
+                    @if (transportationModel != null)
+                    {
+                        @if (transportationModel.Distance >= 0)
+                        {
+                            <InputSelect class="form-control" @bind-Value="CarDriver1">
+                                @if (FreeCarDriverModels != null)
+                                {
+                                    foreach (var item in FreeCarDriverModels)
+                                    {
+                                        <option value="@item.Id">@item.Name, @item.Surname, @item.MiddleName, @item.Experience yerars of exp</option>
+                                    }
+                                }
+                            </InputSelect>
+                        }
+                        @if (transportationModel.Distance > 500)
+                        {
+                            <InputSelect class="form-control" @bind-Value="CarDriver2">
+                                @if (FreeCarDriverModels != null)
+                                {
+                                    foreach (var item in FreeCarDriverModels)
+                                    {
+                                        <option value="@item.Id">@item.Name, @item.Surname, @item.MiddleName, @item.Experience yerars of exp</option>
+                                    }
+                                }
+                            </InputSelect>
+                        }
+                    }
+                </div>
+            </div><br /><br />
+
+            <div class="row justify-content-around">
+                <div class="col-2">
+                    <label>Distance: @transportationModel.Distance</label><br />
+                    <label>Cost: @transportationModel.Cost</label>
+                </div>
+            </div><br />
+
+
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Add transportation</button>
+                </div>
+            </div>
+
+        </EditForm>
     </div>
+
 </div>
 
 
 @code {
-    private TransportationModel transportationModel = new TransportationModel();
+    private TransportationModel transportationModel = new TransportationModel()
+    {
+        StartDate = DateTime.Now,
+        ArrivalDate = DateTime.Now
+    };
 
     private IEnumerable<CityModel> _startCityModels { get; set; }
     private IEnumerable<CityModel> _destinationCityModels { get; set; }
-
     private IEnumerable<CityModel> sc
     {
         get => _startCityModels;
@@ -120,25 +211,139 @@
         }
     }
 
+    private int _startCity;
+    private int _destinationCity;
+    public int StartCity
+    {
+        get => _startCity;
+        set
+        {
+            _startCity = value;
+            transportationModel.StartCityId = value;
+            SetDistacneAndCost();
+        }
+    }
+    public int DestinationCity
+    {
+        get => _destinationCity;
+        set
+        {
+            _destinationCity = value;
+            transportationModel.DestinationCityId = value;
+            SetDistacneAndCost();
+        }
+    }
     private async void SetStartCities(Region region)
     {
         sc = await cityService.GetCitiesbyRegion(region);
-        if (sc != null) InputRouteModel.StartCityId = sc.Select(c => c.Id).FirstOrDefault();
+        if (sc != null) transportationModel.StartCityId = sc.Select(c => c.Id).FirstOrDefault();
 
     }
     private async void SetDestinationCities(Region region)
     {
         dc = await cityService.GetCitiesbyRegion(region);
-        if (dc != null) InputRouteModel.DestinationCityId = dc.Select(c => c.Id).FirstOrDefault();
+        if (dc != null) transportationModel.DestinationCityId = dc.Select(c => c.Id).FirstOrDefault();
     }
 
-    private async Task HandleValidSubmit()
+    private IEnumerable<CarModel> FreeCars;
+    private CarType _selectedCarType;
+    private CarType SelectedCarType
     {
-        var result = await routeService.AddRoute(InputRouteModel);
-        if (result)
+        get => _selectedCarType;
+        set
         {
-            navigationManager.NavigateTo("/route");
+            _selectedCarType = value;
+            SetCars(value);
+
+        }
+    }
+
+    public async void SetCars(CarType carType) => responceCarsModel = await carService.GetFreeCarsOfSelectedType(carType);
+    private int _selectedCarModelId;
+    private int SelectedCarModelId
+    {
+        get => _selectedCarModelId;
+        set
+        {
+            _selectedCarModelId = value;
+            transportationModel.CarId = value;
+            SetDistacneAndCost();
+        }
+    }
+
+    private ResponceCarsModel _responceCarsModel;
+    private ResponceCarsModel responceCarsModel
+    {
+        get => _responceCarsModel;
+        set
+        { _responceCarsModel = value; FreeCars = value.Cars; StateHasChanged();}
+    }
+
+    private IEnumerable<CarDriverModel> _freeCarDriverModels;
+    private IEnumerable<CarDriverModel> FreeCarDriverModels
+    {
+        get => _freeCarDriverModels;
+        set
+        {
+            _freeCarDriverModels = value;
+            StateHasChanged();
+        }
+    }
+
+    private int CarDriver1 { get; set; }
+    private int CarDriver2 { get; set; }
+
+    protected override async Task OnInitializedAsync() => FreeCarDriverModels = await carDriverService.GetAllFreeCarDrivers();
+
+    private async void HandleValidSubmit()
+    {
+
+        var result = await transportationService.AddTransportation(transportationModel);
+
+        if (CarDriver1 != CarDriver2)
+        {
+            if (CarDriver1 != 0)
+            {
+                var carDriver1Res = await driverSalaryService.AddDriverSalary(new DriverSalaryModel
+                {
+                    TransportationId = result.Id,
+                    CarDriverId = CarDriver1,
+                    Salary = transportationModel.Distance * 3
+                });
+            }
+            if (CarDriver2 != 0)
+            {
+                var carDriver1Res = await driverSalaryService.AddDriverSalary(new DriverSalaryModel
+                {
+                    TransportationId = result.Id,
+                    CarDriverId = CarDriver2,
+                    Salary = transportationModel.Distance * 3
+                });
+            }
         }
 
+        if (result != null)
+        {
+            navigationManager.NavigateTo($"/transportation/transportationinfo/{result.Id}");
+        }
     }
+
+    private async void SetDistacneAndCost()
+    {
+        if (transportationModel.DestinationCityId != 0 && transportationModel.StartCityId != 0 && SelectedCarModelId != 0)
+        {
+            var startCity = await cityService.GetCityById(transportationModel.StartCityId);
+            var destinationCity = await cityService.GetCityById(transportationModel.DestinationCityId);
+            var car = await carService.GetCarById(SelectedCarModelId);
+
+            // finding approximately distance between cities
+            transportationModel.Distance = (int) Math.Sqrt(Math.Pow((startCity.Latitude - destinationCity.Latitude), 2) + Math.Pow((startCity.Longitude - destinationCity.Longitude), 2)) * 100;
+
+            //finding approximately cost of transportation
+            transportationModel.Cost = (int) (transportationModel.Distance * (car.FuelConsumption / 100) * 25);
+
+            StateHasChanged();
+        }
+    }
+
 }

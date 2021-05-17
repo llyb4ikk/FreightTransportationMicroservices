@@ -4,6 +4,7 @@ using AutoMapper;
 using FreightTransport_BLL.DTOs;
 using FreightTransport_BLL.Interfaces.IServices;
 using FreightTransport_DAL.Entities;
+using FreightTransport_DAL.Enums;
 using FreightTransport_DAL.Interfaces;
 
 namespace FreightTransport_BLL.Services
@@ -53,6 +54,13 @@ namespace FreightTransport_BLL.Services
         public async Task<bool> DeleteCarAsync(int id)
         {
             return await _db.CarRepository.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<CarDTO>> GetFreeCarsOfSelectedType(CarType carType)
+        {
+            var result = await _db.CarRepository.GetFreeCarsOfCartype(carType);
+            if (result != null) return _mapper.Map<IEnumerable<CarDTO>>(result);
+            return null;
         }
     }
 }

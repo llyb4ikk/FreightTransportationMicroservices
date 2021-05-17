@@ -38,6 +38,16 @@ namespace FreightTransport.Controllers
         }
 
         [HttpGet]
+        [Route("GetAllFreeCarDrivers")]
+        public async Task<IActionResult> GetAllFreeCarDrivers()
+        {
+            var result = await _service.GetAllFreeCarDrivers();
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpGet]
         [Route("GetCarDriverById/{id}")]
         public async Task<IActionResult> GetCarDriverById(int id)
         {

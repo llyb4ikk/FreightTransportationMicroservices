@@ -1,0 +1,75 @@
+﻿@page "/client"
+@inject IClientService clientService;
+@inject HttpClient http;
+@inject NavigationManager navigationManager;
+@using FreightTransport_Client.Data.Interfaces;
+@using FreightTransport_Client.Data.Models
+@using Microsoft.AspNetCore.Http.Extensions
+
+<div class="row justify-content-between">
+    <div class="col col-1">
+        <h3>Client</h3>
+    </div>
+    <div class="col-sm-auto">
+        <button type="button" class="btn btn-primary" @onclick="NavigateToAddClient">Add client</button>
+    </div>
+</div>
+
+
+@if (clientModels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-hover ">
+        <thead>
+            <tr>
+                <th scope="col">Nmae</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Middle name</th>
+                <th scope="col">Date of birth</th>
+                <th scope="col">RegistrationDate</th>
+                <th scope="col">CountOfOrders</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in clientModels)
+            {
+                <tr>
+                    <td>@client.Name</td>
+                    <td>@client.Surname</td>
+                    <td>@client.MiddleName</td>
+                    <td>@client.DateOfBirth</td>
+                    <td>@client.RegistrationDate</td>
+                    <td>@client.CountOfOrders</td>
+                    <button class="btn btn-warning" @onclick="() => NavigateToEditing(client.Id)">Edit</button>
+                    <button class="btn btn-danger" @onclick="() => DeleteClient(client.Id)">Delete</button>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<ClientModel> clientModels;
+
+    protected override async Task OnInitializedAsync()
+    {
+        clientModels = await clientService.GetAllClients();
+    }
+
+    private void NavigateToAddClient() => navigationManager.NavigateTo("/client/addclient");
+    private void NavigateToEditing(int id) => navigationManager.NavigateTo($"/client/editclient/{id}");
+    private async void DeleteClient(int id)
+    {
+        var result = await clientService.DeleteClient(id);
+        if (result)
+        {
+            clientModels = await clientService.GetAllClients();
+            StateHasChanged();
+        }
+
+    }
+
+}

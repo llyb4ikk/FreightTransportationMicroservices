@@ -1,4 +1,4 @@
-﻿@page "/route"
+﻿@page "/transportation"
 @inject ITransportationService transportationService;
 @inject HttpClient http;
 @inject NavigationManager navigationManager;
@@ -27,10 +27,8 @@ else
             <tr>
                 <th scope="col">Start date</th>
                 <th scope="col">Arrive date</th>
-                <th scope="col">Start sity</th>
-                <th scope="col">Start region</th>
-                <th scope="col">Destination city</th>
-                <th scope="col">Destination region</th>
+                <th scope="col">Start location</th>
+                <th scope="col">Destination location</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -38,12 +36,10 @@ else
             @foreach (var transportation in transportationTableModels)
             {
                 <tr>
-                    <td>@transportation.DepartureDate</td>
-                    <td>@transportation.ArrivalDate</td>
-                    <td>@transportation.StartCity</td>
-                    <td>@transportation.StartRegion</td>
-                    <td>@transportation.DestinationCity</td>
-                    <td>@transportation.DestinationRegion</td>
+                    <td value="@transportation.Id">@transportation.StartDate.ToShortDateString()</td>
+                    <td value="@transportation.Id">@transportation.ArrivalDate.ToShortDateString()</td>
+                    <td value="@transportation.Id">@transportation.StartCity, @transportation.StartRegion obl</td>
+                    <td value="@transportation.Id">@transportation.DestinationCity, @transportation.DestinationRegion obl</td>
                     <button class="btn btn-warning" @onclick="() => NavigateToEditing(transportation.Id)">Edit</button>
                     <button class="btn btn-danger" @onclick="() => DeleteRoute(transportation.Id)">Delete</button>
                 </tr>
@@ -61,7 +57,8 @@ else
     }
 
     private void NavigateToAdd() => navigationManager.NavigateTo("/transportation/addtransportation");
-    private void NavigateToEditing(int id) => navigationManager.NavigateTo($"/transportation/edittransportation/{id}");
+    private void NavigateToEditing(int id) => navigationManager.NavigateTo($"/transportation/transportationdetails/{id}");
+    private void NavigateToInformation(int id) => navigationManager.NavigateTo($"/transportation/transportationdetails/{id}");
     private async void DeleteRoute(int id)
     {
         var result = await transportationService.DeleteTransportation(id);
@@ -70,7 +67,6 @@ else
             transportationTableModels = await transportationService.GetAllTransportationsTable();
             StateHasChanged();
         }
-
     }
 
 }

@@ -92,9 +92,6 @@ namespace FreightTransport_DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -107,6 +104,12 @@ namespace FreightTransport_DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TransportationId")
+                        .HasColumnType("int");
+
                     b.Property<float>("Weight")
                         .HasColumnType("real");
 
@@ -115,7 +118,9 @@ namespace FreightTransport_DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("TransportationId");
 
                     b.ToTable("Cargos");
                 });
@@ -127,14 +132,14 @@ namespace FreightTransport_DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("EastLongitude")
+                    b.Property<float>("Latitude")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Longitude")
                         .HasColumnType("real");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("NorthLatitude")
-                        .HasColumnType("real");
 
                     b.Property<int>("Region")
                         .HasColumnType("int");
@@ -144,12 +149,43 @@ namespace FreightTransport_DAL.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("FreightTransport_DAL.Entities.Route", b =>
+            modelBuilder.Entity("FreightTransport_DAL.Entities.DriverSalary", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CarDriverId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Salary")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TransportationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarDriverId");
+
+                    b.HasIndex("TransportationId");
+
+                    b.ToTable("DiverSalaries");
+                });
+
+            modelBuilder.Entity("FreightTransport_DAL.Entities.Transportation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("ArrivalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Cost")
                         .HasColumnType("int");
@@ -163,75 +199,29 @@ namespace FreightTransport_DAL.Migrations
                     b.Property<int>("StartCityId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("DestinationCityId");
-
-                    b.HasIndex("StartCityId");
-
-                    b.ToTable("Routes");
-                });
-
-            modelBuilder.Entity("FreightTransport_DAL.Entities.Transportation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("ArrivalDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("CarDriverId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CarDriverSecondId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CarDriverSecondId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CargoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DepartureDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RouteId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarDriverSecondId");
-
-                    b.HasIndex("CarDriverSecondId1");
-
                     b.HasIndex("CarId");
 
-                    b.HasIndex("CargoId")
-                        .IsUnique();
+                    b.HasIndex("DestinationCityId");
 
-                    b.HasIndex("RouteId");
+                    b.HasIndex("StartCityId");
 
                     b.ToTable("Transportations");
                 });
 
             modelBuilder.Entity("FreightTransport_DAL.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CountOfOrders")
                         .HasColumnType("int");
@@ -242,49 +232,19 @@ namespace FreightTransport_DAL.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Surname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -294,16 +254,49 @@ namespace FreightTransport_DAL.Migrations
 
             modelBuilder.Entity("FreightTransport_DAL.Entities.Cargo", b =>
                 {
-                    b.HasOne("FreightTransport_DAL.Entities.User", "Client")
+                    b.HasOne("FreightTransport_DAL.Entities.User", "Owner")
                         .WithMany("Cargos")
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreightTransport_DAL.Entities.Transportation", "Transportation")
+                        .WithMany("Cargos")
+                        .HasForeignKey("TransportationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Client");
+                    b.Navigation("Owner");
+
+                    b.Navigation("Transportation");
                 });
 
-            modelBuilder.Entity("FreightTransport_DAL.Entities.Route", b =>
+            modelBuilder.Entity("FreightTransport_DAL.Entities.DriverSalary", b =>
                 {
+                    b.HasOne("FreightTransport_DAL.Entities.CarDriver", "CarDriver")
+                        .WithMany("Salaries")
+                        .HasForeignKey("CarDriverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FreightTransport_DAL.Entities.Transportation", "Transportation")
+                        .WithMany("DriverSalaries")
+                        .HasForeignKey("TransportationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CarDriver");
+
+                    b.Navigation("Transportation");
+                });
+
+            modelBuilder.Entity("FreightTransport_DAL.Entities.Transportation", b =>
+                {
+                    b.HasOne("FreightTransport_DAL.Entities.Car", "Car")
+                        .WithMany("Transportations")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("FreightTransport_DAL.Entities.City", "DestinationCity")
                         .WithMany("DestinationRoutes")
                         .HasForeignKey("DestinationCityId")
@@ -316,49 +309,11 @@ namespace FreightTransport_DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Car");
+
                     b.Navigation("DestinationCity");
 
                     b.Navigation("StartCity");
-                });
-
-            modelBuilder.Entity("FreightTransport_DAL.Entities.Transportation", b =>
-                {
-                    b.HasOne("FreightTransport_DAL.Entities.CarDriver", "CarDriver")
-                        .WithMany("Transportations")
-                        .HasForeignKey("CarDriverSecondId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("FreightTransport_DAL.Entities.CarDriver", "CarDriverSecond")
-                        .WithMany()
-                        .HasForeignKey("CarDriverSecondId1");
-
-                    b.HasOne("FreightTransport_DAL.Entities.Car", "Car")
-                        .WithMany("Transportations")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FreightTransport_DAL.Entities.Cargo", "Cargo")
-                        .WithOne("Transportation")
-                        .HasForeignKey("FreightTransport_DAL.Entities.Transportation", "CargoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FreightTransport_DAL.Entities.Route", "Route")
-                        .WithMany("Transportations")
-                        .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-
-                    b.Navigation("CarDriver");
-
-                    b.Navigation("CarDriverSecond");
-
-                    b.Navigation("Cargo");
-
-                    b.Navigation("Route");
                 });
 
             modelBuilder.Entity("FreightTransport_DAL.Entities.Car", b =>
@@ -368,12 +323,7 @@ namespace FreightTransport_DAL.Migrations
 
             modelBuilder.Entity("FreightTransport_DAL.Entities.CarDriver", b =>
                 {
-                    b.Navigation("Transportations");
-                });
-
-            modelBuilder.Entity("FreightTransport_DAL.Entities.Cargo", b =>
-                {
-                    b.Navigation("Transportation");
+                    b.Navigation("Salaries");
                 });
 
             modelBuilder.Entity("FreightTransport_DAL.Entities.City", b =>
@@ -383,9 +333,11 @@ namespace FreightTransport_DAL.Migrations
                     b.Navigation("StartRoutes");
                 });
 
-            modelBuilder.Entity("FreightTransport_DAL.Entities.Route", b =>
+            modelBuilder.Entity("FreightTransport_DAL.Entities.Transportation", b =>
                 {
-                    b.Navigation("Transportations");
+                    b.Navigation("Cargos");
+
+                    b.Navigation("DriverSalaries");
                 });
 
             modelBuilder.Entity("FreightTransport_DAL.Entities.User", b =>

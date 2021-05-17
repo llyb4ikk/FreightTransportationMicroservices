@@ -1,0 +1,68 @@
+﻿@page "/client/addclient"
+@inject IClientService clientService
+@inject NavigationManager navigationManager
+@using FreightTransport_Client.Data.Models
+@using FreightTransport_Client.Data.Enums
+@using FreightTransport_Client.Data.Interfaces
+
+<div class="col-sm-auto">
+    <NavLink href="/client">&#8678Back to list of clients</NavLink><br />
+
+    <div class="row justify-content-center">
+        <div class="col-4 ">
+            <div class="row justify-content-center"><h3 class="col-auto">Add client</h3></div>
+
+            <EditForm Model="@InputClientModel" OnValidSubmit="@HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group has-validation">
+                    <label>Name:</label>
+                    <InputText class="form-control" @bind-Value="InputClientModel.Name"></InputText>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Surname:</label>
+                    <InputText class="form-control" @bind-Value="InputClientModel.Surname"></InputText>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Middle name:</label>
+                    <InputText class="form-control" @bind-Value="InputClientModel.MiddleName"></InputText>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Date of birth:</label>
+                    <InputDate class="form-control" @bind-Value="InputClientModel.DateOfBirth"></InputDate>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Email:</label>
+                    <InputText class="form-control" @bind-Value="InputClientModel.Email"></InputText>
+                </div>
+                <div class="form-group has-validation">
+                    <label>Phone number:</label>
+                    <InputText class="form-control" @bind-Value="InputClientModel.PhoneNumber"></InputText>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Add client</button>
+                    </div>
+                </div>
+
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private ClientModel InputClientModel = new ClientModel() {RegistrationDate = DateTime.Now, DateOfBirth = DateTime.Now};
+
+    private async Task HandleValidSubmit()
+    {
+        var result = await clientService.AddClient(InputClientModel);
+        if (result)
+        {
+            navigationManager.NavigateTo("/client");
+        }
+
+    }
+}

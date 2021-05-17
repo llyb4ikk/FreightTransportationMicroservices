@@ -16,6 +16,6 @@ namespace FreightTransport_DAL.Entities
         public int Experience { get; set; }
         public CarDriverStatus Status { get; set; }
 
-        public ICollection<Transportation> Transportations { get; set; }
+        public ICollection<DriverSalary> Salaries { get; set; }
     }
 }

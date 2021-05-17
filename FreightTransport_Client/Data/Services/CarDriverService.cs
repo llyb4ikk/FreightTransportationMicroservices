@@ -56,5 +56,10 @@ namespace FreightTransport_Client.Data.Services
                 return true;
             return false;
         }
+
+        public async Task<IEnumerable<CarDriverModel>> GetAllFreeCarDrivers()
+        {
+            return await _http.GetFromJsonAsync<IEnumerable<CarDriverModel>>("CarDriver/GetAllFreeCarDrivers");
+        }
     }
 }

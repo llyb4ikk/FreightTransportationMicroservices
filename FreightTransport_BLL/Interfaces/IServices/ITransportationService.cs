@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FreightTransport_BLL.DTOs;
 
@@ -11,5 +12,10 @@ namespace FreightTransport_BLL.Interfaces.IServices
         Task<TransportationDTO> AddTransportationAsync(TransportationDTO transportationDto);
         Task<TransportationDTO> EditTransportationAsync(TransportationDTO transportationDto);
         Task<bool> DeleteTransportationAsync(int id);
+
+        Task<IEnumerable<TransportationTableDTO>> GetAllTransportationsTable();
+        Task<IEnumerable<TransportationTableDTO>> GetTranspotationsTableBy(Func<IEnumerable<TransportationTableDTO>> f);
+        Task<TransportationDetailsDTO> GetTransportationDetailsById(int id);
+        Task<bool> NextStageAsync(int transportationId);
     }
 }

@@ -12,5 +12,7 @@ namespace FreightTransport_BLL.Interfaces.IServices
         Task<CarDriverDTO> AddCarDriverAsync(CarDriverDTO carDriverDto);
         Task<CarDriverDTO> EditCarDriverAsync(CarDriverDTO carDriverDto);
         Task<bool> DeleteCarDriverAsync(int id);
+
+        Task<IEnumerable<CarDriverDTO>> GetAllFreeCarDrivers();
     }
 }

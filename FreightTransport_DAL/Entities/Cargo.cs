@@ -15,8 +15,10 @@ namespace FreightTransport_DAL.Entities
         public float? Width { get; set; }
         public float? Length { get; set; }
 
-        public string ClientId { get; set; }
-        public User Client { get; set; }
+        public int OwnerId { get; set; }
+        public User Owner { get; set; }
+
+        public int? TransportationId { get; set; }
         public Transportation Transportation { get; set; }
     }
 }

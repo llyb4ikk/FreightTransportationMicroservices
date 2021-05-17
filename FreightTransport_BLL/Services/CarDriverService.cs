@@ -55,5 +55,13 @@ namespace FreightTransport_BLL.Services
         {
             return await _db.CarDriverRepository.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<CarDriverDTO>> GetAllFreeCarDrivers()
+        {
+            IEnumerable<CarDriver> result = await _db.CarDriverRepository.GetFreeCarDriversAsync();
+            if (result != null)
+                return _mapper.Map<IEnumerable<CarDriverDTO>>(result);
+            return null;
+        }
     }
 }

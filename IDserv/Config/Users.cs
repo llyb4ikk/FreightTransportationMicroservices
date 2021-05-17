@@ -11,12 +11,17 @@ namespace IdentityServer
         {
             return new List<TestUser> {
                 new TestUser {
-                    SubjectId = "5BE86359-073C-434B-AD2D-A3932222DABE",
-                    Username = "scott",
-                    Password = "password",
-                    Claims = new List<Claim> {
-                        new Claim(JwtClaimTypes.Email, "scott@scottbrady91.com"),
-                        new Claim(JwtClaimTypes.Role, "admin")
+                    SubjectId = "123",
+                    Username = "admin",
+                    Password = "passwd123",
+                    Claims =
+                    {
+                        new Claim(JwtClaimTypes.Name, "Liubomyr Tymchuk"),
+                        new Claim(JwtClaimTypes.GivenName, "Lybchik"),
+                        new Claim(JwtClaimTypes.FamilyName, "Tymchuk"),
+                        new Claim(JwtClaimTypes.Email, "some@mail.com"),
+                        new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+                        new Claim(JwtClaimTypes.Role, "admin"),
                     }
                 }
             };

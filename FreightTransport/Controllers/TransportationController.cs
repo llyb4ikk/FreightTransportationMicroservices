@@ -8,7 +8,7 @@ namespace FreightTransport.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class TransportationController : Controller
     {
         private readonly ITransportationService _service;
@@ -64,6 +64,36 @@ namespace FreightTransport.Controllers
             var result = await _service.DeleteTransportationAsync(id);
             if (result)
                 return Ok();
+            return NotFound("empty");
+        }
+
+        [HttpGet]
+        [Route("GetAllTransportationsTable")]
+        public async Task<IActionResult> GetAllTransportationsTable()
+        {
+            var result = await _service.GetAllTransportationsTable();
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpGet]
+        [Route("GettransportationDetailsById/{id}")]
+        public async Task<IActionResult> GettransportationDetailsById(int id)
+        {
+            var result = await _service.GetTransportationDetailsById(id);
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpGet]
+        [Route("NextStage/{transportationId}")]
+        public async Task<IActionResult> NextStage(int transportationId)
+        {
+            var result = await _service.NextStageAsync(transportationId);
+            if (result != null)
+                return Ok(result);
             return NotFound("empty");
         }
     }

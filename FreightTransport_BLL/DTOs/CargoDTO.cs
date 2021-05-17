@@ -10,6 +10,7 @@
         public float? Width { get; set; }
         public float? Length { get; set; }
 
-        public int ClientId { get; set; }
+        public int OwnerId { get; set; }
+        public int? TransportationId { get; set; }
     }
 }

@@ -8,7 +8,8 @@ namespace FreightTransport_DAL.Interfaces
         ICarDriverRepository CarDriverRepository { get; }
         ICargoRepository CargoRepository { get; }
         ICityRepository CityRepository { get; }
-        IRouteRepository RouteRepository { get; }
+        IDriverSalaryRepository DriverSalaryRepository { get; }
+        IClientRepository ClientRepository { get; }
         ITransportationRepository TransportationRepository { get; }
     }
 }

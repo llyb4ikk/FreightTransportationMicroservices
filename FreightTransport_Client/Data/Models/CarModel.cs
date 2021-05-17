@@ -29,5 +29,9 @@ namespace FreightTransport_Client.Data.Models
         public CarType CarType { get; set; }
         public CarStatus Status { get; set; }
 
+
+        [JsonIgnore]
+        public string message { get; set; }
+
     }
 }

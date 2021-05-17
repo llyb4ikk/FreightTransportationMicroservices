@@ -35,15 +35,5 @@ namespace FreightTransport.Controllers
                 return Ok(result);
             return NotFound("empty");
         }
-
-        [HttpPost]
-        [Route("AddCity")]
-        public async Task<IActionResult> AddCity(CityDTO cityDto)
-        {
-            var result = await _service.AddCityAsync(cityDto);
-            if (result != null)
-                return Ok(result);
-            return NotFound("empty");
-        }
     }
 }

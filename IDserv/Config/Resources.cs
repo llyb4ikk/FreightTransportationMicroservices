@@ -30,8 +30,8 @@ namespace IdentityServer
                     DisplayName = "Freight Transport API",
                     Description = "Allow the application to access Freight Transport API on your behalf",
                     Scopes = new List<string> { "freighttransportapi.read", "freighttransportapi.write"},
-                    ApiSecrets = new List<Secret> {new Secret("ScopeSecret".Sha256())},
-                    UserClaims = new List<string> {"role"}
+                    ApiSecrets = new List<Secret> {new Secret("SecretPasswd".Sha256())},
+                    //UserClaims = new List<string> {"role"}
                 }
             };
         }

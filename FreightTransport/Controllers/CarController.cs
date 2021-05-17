@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using FreightTransport_BLL.DTOs;
 using FreightTransport_BLL.Interfaces.IServices;
+using FreightTransport_DAL.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +10,7 @@ namespace FreightTransport.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class CarController : Controller
     {
         private readonly ICarService _service;
@@ -64,6 +66,18 @@ namespace FreightTransport.Controllers
             var result = await _service.DeleteCarAsync(id);
             if (result)
                 return Ok();
+            return NotFound("empty");
+        }
+
+        [HttpGet]
+        [Route("GetFreeCarsOfSelectedType/{carType}")]
+        public async Task<IActionResult> GetFreeCarsOfSelectedType(CarType carType)
+        {
+            var result = await _service.GetFreeCarsOfSelectedType(carType);
+            if (result.Count() == 0)
+                return NoContent();
+            if (result != null)
+                return Ok(result);
             return NotFound("empty");
         }
     }

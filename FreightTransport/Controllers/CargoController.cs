@@ -8,10 +8,11 @@ namespace FreightTransport.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class CargoController : Controller
     {
         private readonly ICargoService _service;
+
         public CargoController(ICargoService service)
         {
             _service = service;
@@ -64,6 +65,56 @@ namespace FreightTransport.Controllers
             var result = await _service.DeleteCargoAsync(id);
             if (result)
                 return Ok();
+            return NotFound("empty");
+        }
+
+        [HttpGet]
+        [Route("GetAllCargosWithOwnersByTransportationId/{id}")]
+        public async Task<IActionResult> GetAllCargosWithOwnersByTransportationId(int id)
+        {
+            var result = await _service.GetAllCargosWithOwnersByTransportationId(id);
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpGet]
+        [Route("GetAllCargosWithOwner")]
+        public async Task<IActionResult> GetAllCargosWithOwner()
+        {
+            var result = await _service.GetAllCargosWithOwner();
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpPut]
+        [Route("AddCargoToTransportation/{transportationId}")]
+        public async Task<IActionResult> AddCargoToTransportation([FromBody]int cargoId, int transportationId)
+        {
+            var result = await _service.AddCargoToTransportation(cargoId, transportationId);
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpPut]
+        [Route("RemoveCargoToTransportation")]
+        public async Task<IActionResult> RemoveCargoToTransportation([FromBody] int cargoId)
+        {
+            var result = await _service.RemoveCargoToTransportation(cargoId);
+            if (result != null)
+                return Ok(result);
+            return NotFound("empty");
+        }
+
+        [HttpGet]
+        [Route("GetAllCargosWithOwnersWithputTransportation")]
+        public async Task<IActionResult> GetAllCargosWithOwnersWithputTransportation()
+        {
+            var result = await _service.GetAllCargosWithOwnersWithputTransportation();
+            if (result != null)
+                return Ok(result);
             return NotFound("empty");
         }
     }

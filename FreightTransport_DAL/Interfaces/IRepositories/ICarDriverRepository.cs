@@ -9,5 +9,7 @@ namespace FreightTransport_DAL.Interfaces.IRepositories
 {
     public interface ICarDriverRepository : IGenericRepository<CarDriver>
     {
+        Task<IEnumerable<CarDriver>> GetFreeCarDriversAsync();
+        
     }
 }

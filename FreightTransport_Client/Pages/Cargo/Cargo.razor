@@ -1,0 +1,75 @@
+﻿@page "/cargo"
+@inject IClientService clientService
+@inject ICargoService cargoService
+@inject HttpClient http;
+@inject NavigationManager navigationManager
+@using FreightTransport_Client.Data.Interfaces;
+@using FreightTransport_Client.Data.Models
+@using Microsoft.AspNetCore.Http.Extensions
+
+<div class="row justify-content-between">
+    <div class="col col-1">
+        <h3>Cargo</h3>
+    </div>
+    <div class="col-sm-auto">
+        <button type="button" class="btn btn-primary" @onclick="NavigateToAddCargo">Add cargo</button>
+    </div>
+</div>
+
+
+@if (cargoModels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-hover ">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Owner name</th>
+                <th scope="col">Owner surname</th>
+                <th scope="col">Owner middle name</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cargo in cargoModels)
+            {
+                <tr>
+                    <td>@cargo.Name</td>
+                    <td>@cargo.Weight</td>
+                    <td>@cargo.OwnerName</td>
+                    <td>@cargo.OwnerSurname</td>
+                    <td>@cargo.OwnerMiddleName</td>
+                    <button class="btn btn-warning" @onclick="() => NavigateToEditing(cargo.Id)">Edit</button>
+                    <button class="btn btn-danger" @onclick="() => DeleteCargo(cargo.Id)">Delete</button>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<CargoTableModel> cargoModels;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cargoModels = await cargoService.GetAllCargoTableModels();
+    }
+
+    private void NavigateToAddCargo() => navigationManager.NavigateTo("/cargo/addcargo");
+    private void NavigateToEditing(int id) => navigationManager.NavigateTo($"/cargo/editcargo/{id}");
+    private async void DeleteCargo(int id)
+    {
+        var result = await cargoService.DeleteCargo(id);
+        if (result)
+        {
+            cargoModels = await cargoService.GetAllCargoTableModels();
+            StateHasChanged();
+        }
+
+    }
+
+}

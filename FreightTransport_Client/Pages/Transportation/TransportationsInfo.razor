@@ -1,0 +1,248 @@
+﻿@page "/transportation/transportationdetails/{id:int}"
+@using FreightTransport_Client.Data.Interfaces
+@using FreightTransport_Client.Data.Models
+@using FreightTransport_Client.Data.Enums
+@inject ITransportationService transportationService
+@inject ICargoService cargoService
+@inject IDriverSalaryService driverSalaryService
+@inject NavigationManager navigationManager;
+
+
+<div class="col-sm-auto">
+    <NavLink href="/transportation">&#8678Back to list of transportations</NavLink><br />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="row justify-content-center">
+                <h3 class="col-auto">Transportation details</h3>
+            </div><br/>
+
+            <div class="row justify-content-center">
+                <div class="col-5">
+                    @if (TransportationInfoModel == null)
+                    {
+                        <p><em>Loading...</em></p>
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <h4 class="row">@TransportationInfoModel.StartCity, @TransportationInfoModel.StartRegion obl</h4>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <ol>
+                                        @foreach (var item in Enum.GetNames<TransportationStatus>())
+                                        {
+                                            <li class="@((TransportationInfoModel.Status.ToString() == item) ? "" : "text-secondary")" value="@item">@item</li>
+                                        }
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <h4 class="row">@TransportationInfoModel.DestinationCity, @TransportationInfoModel.DestinationRegion obl</h4>
+                        </div><br/>
+
+                        <div class="col-4"><button class="btn btn-primary" @onclick="NextStage">next stage</button></div><br/>
+
+                        <div class="col-12">
+                            <h5 class="row">Distance: @TransportationInfoModel.Distance kilometers</h5>
+                            <h5 class="row">Cost: @TransportationInfoModel.Cost$</h5>
+                        </div><br/><br/>
+                    }
+                    
+
+                    <h4>Drivers:</h4>
+                    @if (driverSalaryInfoModels != null)
+                    {
+                        foreach (var driverSalary in driverSalaryInfoModels)
+                        {
+                            <h5>@driverSalary.Name, @driverSalary.Surname, @driverSalary.MiddleName</h5> 
+                            <h6>@driverSalary.Experience years of experience</h6> 
+                            <h6>Salary: @driverSalary.Salary$"</h6><br/>
+                        }
+                        
+                    }
+                    
+                </div>
+
+                <div class="col-7">
+                    <div class="row justify-content-center">
+                        <h4 class="col-auto">Cargos</h4>
+
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+                                @if (CargoTableModels == null)
+                                {
+                                    <p><em>Loading...</em></p>
+                                }
+                                else
+                                {
+                                    <table class="table table-hover ">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Owner name</th>
+                                                <th scope="col">Owner surname</th>
+                                                <th scope="col">Owner middle name</th>
+                                                <th scope="col">Weight</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var cargo in CargoTableModels)
+                                        {
+                                            <tr>
+                                                <td>@cargo.Name</td>
+                                                <td>@cargo.OwnerName</td>
+                                                <td>@cargo.OwnerSurname</td>
+                                                <td>@cargo.OwnerMiddleName</td>
+                                                <td>@cargo.Weight</td>
+                                                <button class="btn btn-warning" @onclick="() => RemoveFromTransportation(cargo.Id)">Remove</button>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                }
+                            </div>
+                        </div><br/><br/>
+
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+                                <h6 class="col-auto">Add cargo to this transportation</h6>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <select class="form-control" @bind="SelectedToAdd">
+                                        @if (ListOfCargoWithoutTransportation != null)
+                                        {
+                                            foreach (var item in ListOfCargoWithoutTransportation)
+                                            {
+                                                <option value="@item.Id">@item.Name, @item.Weight, @item.OwnerName, @item.OwnerSurname, @item.OwnerMiddleName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="col-auto">
+                                    <button class="btn btn-primary" @onclick="@AddCargoToTransportation">Add cargo</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                
+
+            </div>
+        </div>   
+        
+
+    </div >
+</div>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private TransportationInfoModel _TransportationInfoModel;
+    public TransportationInfoModel TransportationInfoModel
+    {
+        get => _TransportationInfoModel;
+        set
+        {
+            _TransportationInfoModel = value;
+            SetCargoTableModels();
+            StateHasChanged();
+        }
+    }
+
+    private async Task SetCargoTableModels()
+    {
+        CargoTableModels = await cargoService.GetAllCargoModelsBytransportationId(TransportationInfoModel.Id);
+        ListOfCargoWithoutTransportation = await cargoService.GetAllCargoModelsWithoutTransportation();
+        driverSalaryInfoModels = await driverSalaryService.GetDriverSalariesInformationByTransportation(TransportationInfoModel.Id);
+    }
+
+    private IEnumerable<CargoTableModel> _cargoTableModels;
+    private IEnumerable<CargoTableModel> CargoTableModels
+    {
+        get => _cargoTableModels;
+        set
+        {
+            _cargoTableModels = value;
+            StateHasChanged();
+        }
+    }
+
+    private IEnumerable<CargoTableModel> _listOfCargoWithoutTransportation;
+    private IEnumerable<CargoTableModel> ListOfCargoWithoutTransportation
+    {
+        get => _listOfCargoWithoutTransportation;
+        set
+        {
+            _listOfCargoWithoutTransportation = value;
+            SelectedToAdd = value.FirstOrDefault() != null? value.FirstOrDefault().Id : 0;
+            StateHasChanged();
+        }
+    }
+
+    private int _selectedToAdd = 0;
+    private int SelectedToAdd
+    {
+        get => _selectedToAdd;
+        set
+        { _selectedToAdd = value;}
+    }
+
+    private IEnumerable<DriverSalaryInfoModel> _driverSalaryInfoModels;
+
+    private IEnumerable<DriverSalaryInfoModel> driverSalaryInfoModels
+    {
+        get => _driverSalaryInfoModels;
+        set
+        {
+            _driverSalaryInfoModels = value;
+            StateHasChanged();
+        }
+    }
+
+    private async void AddCargoToTransportation()
+    {
+        var res = await cargoService.AddCargoToTransportation(SelectedToAdd, TransportationInfoModel.Id);
+        if (res)
+        {
+            SetCargoTableModels();
+            StateHasChanged();
+        }
+    }
+
+
+    private async void NextStage()
+    {
+
+        var result = await transportationService.NextStage(TransportationInfoModel.Id);
+        if (result)
+        {
+            OnInitializedAsync();
+        }   
+    }
+
+    private async void GetDriverSalariesInformation() => await driverSalaryService.GetDriverSalariesInformationByTransportation(TransportationInfoModel.Id);
+
+
+    protected override async Task OnInitializedAsync() => TransportationInfoModel = await transportationService.GetTransportationDetailsById(Id);
+
+    public async void RemoveFromTransportation(int id)
+    {
+        var res = await cargoService.RemoveCargoFromTransportation(id);
+        if (res)
+        {
+            SetCargoTableModels();
+
+            StateHasChanged();
+        }
+    }
+    public void NavigateToEditingCargo(int id) => navigationManager.NavigateTo($"/trarnsportation/editcargo/{id}");
+}

@@ -11,5 +11,7 @@ namespace FreightTransport_Client.Data.Interfaces
         Task<bool> AddCarDriver(CarDriverModel car);
         Task<bool> UpdateCarDriver(CarDriverModel car);
         Task<bool> DeleteCarDriver(int id);
+
+        Task<IEnumerable<CarDriverModel>> GetAllFreeCarDrivers();
     }
 }

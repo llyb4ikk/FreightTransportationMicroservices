@@ -11,6 +11,7 @@ namespace FreightTransport_Client.Data.Services
     public class TransportationService : ITransportationService
     {
         private readonly HttpClient _http;
+
         public TransportationService(HttpClient http)
         {
             _http = http;
@@ -19,20 +20,22 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<TransportationInfoModel> GetTransportationInfoById(int id)
         {
-            return await _http.GetFromJsonAsync<TransportationInfoModel>($"Transportation/GetTransportationInfoById/{id}");
+            return await _http.GetFromJsonAsync<TransportationInfoModel>(
+                $"Transportation/GetTransportationInfoById/{id}");
         }
 
         public async Task<IEnumerable<TransportationTableModel>> GetAllTransportationsTable()
         {
-            return await _http.GetFromJsonAsync<IEnumerable<TransportationTableModel>>($"Transportation/GetAllTransportationTables");
+            return await _http.GetFromJsonAsync<IEnumerable<TransportationTableModel>>(
+                $"Transportation/GetAllTransportationsTable");
         }
 
-        public async Task<bool> AddTransportation(TransportationModel transportationModel)
+        public async Task<TransportationModel> AddTransportation(TransportationModel transportationModel)
         {
             var response = await _http.PostAsJsonAsync("Transportation/AddTransportation", transportationModel);
             if (response.StatusCode == HttpStatusCode.OK)
-                return true;
-            return false;
+                return await response.Content.ReadFromJsonAsync<TransportationModel>();
+            return null;
         }
 
         public async Task<bool> UpdateTransportation(TransportationModel transportationModel)
@@ -49,6 +52,22 @@ namespace FreightTransport_Client.Data.Services
             if (response.StatusCode == HttpStatusCode.OK)
                 return true;
             return false;
+        }
+
+        public async Task<TransportationInfoModel> GetTransportationDetailsById(int id)
+        {
+            var response =
+             await _http.GetFromJsonAsync<TransportationInfoModel>(
+                $"Transportation/GettransportationDetailsById/{id}");
+            return response;
+        }
+
+        public async Task<bool> NextStage(int transportationId)
+        {
+            var response =
+                await _http.GetFromJsonAsync<bool>(
+                    $"Transportation/NextStage/{transportationId}");
+            return response;
         }
     }
 }
