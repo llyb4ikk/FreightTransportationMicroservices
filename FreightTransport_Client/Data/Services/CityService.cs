@@ -27,13 +27,13 @@ namespace FreightTransport_Client.Data.Services
             //(responseContent,
             //    new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             //return ret;
-
-            return await _http.GetFromJsonAsync<IEnumerable<CityModel>>($"City/GetCitiesByRoute/{region}");
+            var regionId = region.GetHashCode();
+            return await _http.GetFromJsonAsync<IEnumerable<CityModel>>($"CityByRegion/{regionId}");
         }
 
-        public async Task<CityModel> GetCityById(int id)
+        public async Task<CityModel> GetCityById(string id)
         {
-            return await _http.GetFromJsonAsync<CityModel>($"City/GetCityById/{id}");
+            return await _http.GetFromJsonAsync<CityModel>($"City/{id}");
         }
     }
 }

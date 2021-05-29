@@ -44,7 +44,7 @@ namespace FreightTransport_Client
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
-            services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:44368/")});
+            services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5021/")});
             //services.AddHttpClient<ICarService, CarService>(client =>
             //{
             //    client.BaseAddress = new Uri("https://localhost:44368/");

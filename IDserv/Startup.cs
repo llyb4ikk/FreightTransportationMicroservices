@@ -58,7 +58,7 @@ namespace IDserv
                 })
                 .AddDeveloperSigningCredential();
 
-            MainConfig.Init();
+            //MainConfig.Init();
             //services.AddIdentityServer()
             //    .AddInMemoryClients(Clients.Get())
             //    .AddInMemoryIdentityResources(Resources.GetIdentityResources())

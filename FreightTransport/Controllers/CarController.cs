@@ -20,7 +20,6 @@ namespace FreightTransport.Controllers
         }
 
         [HttpPost]
-        [Route("AddCar")]
         public async Task<IActionResult> AddCar(CarDTO carDto)
         {
             var result = await _service.AddCarAsync(carDto);
@@ -30,7 +29,6 @@ namespace FreightTransport.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllCars")]
         public async Task<IActionResult> GetAllCarDrivers()
         {
             var result = await _service.GetAllCarsAsync();
@@ -40,7 +38,7 @@ namespace FreightTransport.Controllers
         }
 
         [HttpGet]
-        [Route("GetCarById/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetCarById(int id)
         {
             var result = await _service.GetCarByIdAsync(id);
@@ -50,7 +48,6 @@ namespace FreightTransport.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateCar")]
         public async Task<IActionResult> UpdateCar(CarDTO carDto)
         {
             var result = await _service.EditCarAsync(carDto);
@@ -60,7 +57,7 @@ namespace FreightTransport.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteCar/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteCar(int id)
         {
             var result = await _service.DeleteCarAsync(id);

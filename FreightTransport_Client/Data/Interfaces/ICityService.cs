@@ -8,6 +8,6 @@ namespace FreightTransport_Client.Data.Interfaces
     public interface ICityService
     {
         Task<IEnumerable<CityModel>> GetCitiesbyRegion(Region region);
-        Task<CityModel> GetCityById(int id);
+        Task<CityModel> GetCityById(string id);
     }
 }

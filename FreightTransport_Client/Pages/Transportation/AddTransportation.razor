@@ -211,9 +211,9 @@
         }
     }
 
-    private int _startCity;
-    private int _destinationCity;
-    public int StartCity
+    private string _startCity;
+    private string _destinationCity;
+    public string StartCity
     {
         get => _startCity;
         set
@@ -223,7 +223,7 @@
             SetDistacneAndCost();
         }
     }
-    public int DestinationCity
+    public string DestinationCity
     {
         get => _destinationCity;
         set
@@ -330,7 +330,7 @@
 
     private async void SetDistacneAndCost()
     {
-        if (transportationModel.DestinationCityId != 0 && transportationModel.StartCityId != 0 && SelectedCarModelId != 0)
+        if (transportationModel.DestinationCityId != null && transportationModel.StartCityId != null && SelectedCarModelId != 0)
         {
             var startCity = await cityService.GetCityById(transportationModel.StartCityId);
             var destinationCity = await cityService.GetCityById(transportationModel.DestinationCityId);

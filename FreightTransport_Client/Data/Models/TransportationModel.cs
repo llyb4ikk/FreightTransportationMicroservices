@@ -15,7 +15,7 @@ namespace FreightTransport_Client.Data.Models
         public int Cost { get; set; }
 
         public int CarId { get; set; }
-        public int StartCityId { get; set; }
-        public int DestinationCityId { get; set; }
+        public string StartCityId { get; set; }
+        public string DestinationCityId { get; set; }
     }
 }

@@ -1,0 +1,226 @@
+{
+  "Routes": [
+    // Location api
+    {
+      "DownstreamPathTemplate": "/City/GetCityById/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/City/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/City/GetCitiesByRegion/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44313
+        }
+      ],
+      "UpstreamPathTemplate": "/CityByRegion/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+
+
+    // Cargo api
+    {
+      "DownstreamPathTemplate": "/Cargo",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44350
+        }
+      ],
+      "UpstreamPathTemplate": "/Cargo",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Cargo/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44350
+        }
+      ],
+      "UpstreamPathTemplate": "/Cargo/{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Cargo/GetCargosTable",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44350
+        }
+      ],
+      "UpstreamPathTemplate": "/GetCargosTable",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Cargo/CargosByTransportation/{transportationId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44350
+        }
+      ],
+      "UpstreamPathTemplate": "/CargosByTransportation/{transportationId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Cargo/CargosInformationByTransportation/{transportationId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44350
+        }
+      ],
+      "UpstreamPathTemplate": "/CargosInformationByTransportation/{transportationId}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Cargo/SetCargoTransportation/{transportationId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44350
+        }
+      ],
+      "UpstreamPathTemplate": "/SetCargoTransportation/{transportationId}",
+      "UpstreamHttpMethod": [ "Put" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Client",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44350
+        }
+      ],
+      "UpstreamPathTemplate": "/Client",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Client/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44350
+        }
+      ],
+      "UpstreamPathTemplate": "/Client{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ]
+    },
+
+
+
+
+
+    // Transportation api
+    {
+      "DownstreamPathTemplate": "/CarDriver",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44368
+        }
+      ],
+      "UpstreamPathTemplate": "/CarDriver",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/CarDriver/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44368
+        }
+      ],
+      "UpstreamPathTemplate": "/CarDriver/{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/CarDriver/FreeDrivers",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44368
+        }
+      ],
+      "UpstreamPathTemplate": "/FreeDrivers",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Car",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44368
+        }
+      ],
+      "UpstreamPathTemplate": "/Car",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Car/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44368
+        }
+      ],
+      "UpstreamPathTemplate": "/Car/{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/Car/GetFreeCarsOfSelectedType/{carType}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44368
+        }
+      ],
+      "UpstreamPathTemplate": "/FreeCarsByType/{carType}",
+      "UpstreamHttpMethod": [ "Get" ]
+    }
+
+
+
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5021"
+  }
+}

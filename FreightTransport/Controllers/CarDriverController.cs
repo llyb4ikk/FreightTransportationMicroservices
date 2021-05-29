@@ -18,7 +18,6 @@ namespace FreightTransport.Controllers
         }
 
         [HttpPost]
-        [Route("AddCarDriver")]
         public async Task<IActionResult> AddCarDriver(CarDriverDTO carDriverDto)
         {
             var result = await _service.AddCarDriverAsync(carDriverDto);
@@ -28,7 +27,6 @@ namespace FreightTransport.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllCarDrivers")]
         public async Task<IActionResult> GetAllCarDrivers()
         {
             var result = await _service.GetAllCarDriversAsync();
@@ -38,7 +36,7 @@ namespace FreightTransport.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllFreeCarDrivers")]
+        [Route("FreeDrivers")]
         public async Task<IActionResult> GetAllFreeCarDrivers()
         {
             var result = await _service.GetAllFreeCarDrivers();
@@ -48,7 +46,7 @@ namespace FreightTransport.Controllers
         }
 
         [HttpGet]
-        [Route("GetCarDriverById/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetCarDriverById(int id)
         {
             var result = await _service.GetCarDriverByIdAsync(id);
@@ -58,7 +56,6 @@ namespace FreightTransport.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateCarDriver")]
         public async Task<IActionResult> UpdateCarDriver(CarDriverDTO carDriverDto)
         {
             var result = await _service.EditCarDriverAsync(carDriverDto);
@@ -68,7 +65,7 @@ namespace FreightTransport.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteCarDriver/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteCarDriver(int id)
         {
             var result = await _service.DeleteCarDriverAsync(id);

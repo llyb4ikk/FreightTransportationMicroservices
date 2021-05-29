@@ -19,12 +19,12 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<CarDriverModel> GetCarDriverById(int id)
         {
-            return await _http.GetFromJsonAsync<CarDriverModel>("CarDriver/GetCarDriverById/" + id);
+            return await _http.GetFromJsonAsync<CarDriverModel>($"CarDriver/{id}");
         }
 
         public async Task<IEnumerable<CarDriverModel>> GetAllCarDrivers()
         {
-            var response = await _http.GetAsync("CarDriver/GetAllCarDrivers");
+            var response = await _http.GetAsync("CarDriver");
 
             var responseContent = await response.Content.ReadAsStreamAsync();
 
@@ -35,7 +35,7 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<bool> AddCarDriver(CarDriverModel carDriver)
         {
-            var response = await _http.PostAsJsonAsync("CarDriver/AddCarDriver", carDriver);
+            var response = await _http.PostAsJsonAsync("CarDriver", carDriver);
             if (response.StatusCode == HttpStatusCode.OK)
                 return true;
             return false;
@@ -43,7 +43,7 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<bool> UpdateCarDriver(CarDriverModel carDriver)
         {
-            var response = await _http.PutAsJsonAsync("CarDriver/UpdateCarDriver", carDriver);
+            var response = await _http.PutAsJsonAsync("CarDriver", carDriver);
             if (response.StatusCode == HttpStatusCode.OK)
                 return true;
             return false;
@@ -51,7 +51,7 @@ namespace FreightTransport_Client.Data.Services
 
         public  async Task<bool> DeleteCarDriver(int id)
         {
-            var response = await _http.DeleteAsync($"CarDriver/DeleteCarDriver/{id}");
+            var response = await _http.DeleteAsync($"CarDriver/{id}");
             if (response.StatusCode == HttpStatusCode.OK)
                 return true;
             return false;
@@ -59,7 +59,7 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<IEnumerable<CarDriverModel>> GetAllFreeCarDrivers()
         {
-            return await _http.GetFromJsonAsync<IEnumerable<CarDriverModel>>("CarDriver/GetAllFreeCarDrivers");
+            return await _http.GetFromJsonAsync<IEnumerable<CarDriverModel>>("CarDriver/FreeDrivers");
         }
     }
 }

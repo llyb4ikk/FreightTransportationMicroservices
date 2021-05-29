@@ -1,0 +1,32 @@
+﻿namespace Location.Enums
+{
+    public enum Region
+    {
+        Kyivska,
+        Kharkivska,
+        Odeska,
+        Dnopropetrovska,
+        Donetska,
+        Zaporizka,
+        Lvivska,
+        Mykolaivska,
+        Sevastopolska,
+        Luhanska,
+        Vinnytska,
+        Krymska,
+        Poltavska,
+        Chernihivska,
+        Khersonska,
+        Cherkaska,
+        Khmelnytska,
+        Zhytomyrska,
+        Chernivetska,
+        Sumska,
+        Rivnenska,
+        Ivano_Frankivska,
+        Kirovohradska,
+        Ternopilska,
+        Volynska,
+        Zakarpatska
+    }
+}

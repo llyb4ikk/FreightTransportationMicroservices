@@ -22,13 +22,13 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<CarModel> GetCarById(int id)
         {
-            return await _http.GetFromJsonAsync<CarModel>("Car/GetCarById/" + id);
+            return await _http.GetFromJsonAsync<CarModel>($"Car/{id}");
         }
 
         public async Task<IEnumerable<CarModel>> GetAllCars()
         {
 
-            var response = await _http.GetAsync("Car/GetAllCars");
+            var response = await _http.GetAsync("Car");
 
             var responseContent = await response.Content.ReadAsStreamAsync();
 
@@ -39,7 +39,7 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<bool> AddCar(CarModel car)
         {
-            var response = await _http.PostAsJsonAsync("Car/AddCar", car);
+            var response = await _http.PostAsJsonAsync("Car", car);
             if (response.StatusCode == HttpStatusCode.OK)
                 return true;
             return false;
@@ -48,7 +48,7 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<bool> UpdateCar(CarModel car)
         {
-            var response = await _http.PutAsJsonAsync("Car/UpdateCar", car);
+            var response = await _http.PutAsJsonAsync("Car", car);
             if (response.StatusCode == HttpStatusCode.OK)
                 return true;
             return false;
@@ -56,7 +56,7 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<bool> DeleteCar(int id)
         {
-            var response = await _http.DeleteAsync($"Car/DeleteCar/{id}");
+            var response = await _http.DeleteAsync($"Car/{id}");
             if (response.StatusCode == HttpStatusCode.OK)
                 return true;
             return false;
@@ -64,7 +64,8 @@ namespace FreightTransport_Client.Data.Services
 
         public async Task<ResponceCarsModel> GetFreeCarsOfSelectedType(CarType carType)
         {
-            var response = await _http.GetAsync($"Car/GetFreeCarsOfSelectedType/{carType}");
+            var carTypeNumber = carType.GetHashCode();
+            var response = await _http.GetAsync($"Car/FreeCarsByType/{carTypeNumber}");
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var cars = await response.Content.ReadFromJsonAsync<IEnumerable<CarModel>>();

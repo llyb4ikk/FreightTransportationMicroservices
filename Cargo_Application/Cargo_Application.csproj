@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Cargo\Commands\" />
+    <Folder Include="Client\Handlers\" />
+    <Folder Include="Client\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cargo_Domain\Cargo_Domain.csproj" />
+    <ProjectReference Include="..\Cargo_Infrastructure\Cargo_Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
